@@ -1,0 +1,29 @@
+.help {
+  padding: 24px;
+  max-width: 720px;
+}
+
+.intro {
+  margin-bottom: 16px;
+}
+
+mat-panel-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+ol,
+ul {
+  padding-left: 24px;
+
+  li {
+    margin-bottom: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .help {
+    padding: 16px;
+  }
+}

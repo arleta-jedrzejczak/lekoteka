@@ -1,0 +1,102 @@
+<div class="help">
+  <h1>Jak korzystać z Lekoteki</h1>
+  <p class="intro">
+    Krótki przewodnik po wszystkich funkcjach aplikacji. Kliknij temat, żeby rozwinąć szczegóły.
+  </p>
+
+  <mat-accordion>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon aria-hidden="true">add_circle</mat-icon>
+          Jak dodać lek lub suplement?
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <ol>
+        <li>Przejdź do zakładki <strong>Harmonogramy</strong> i kliknij <strong>Nowy harmonogram</strong>.</li>
+        <li>Wpisz nazwę leku — podpowiedzi pojawią się automatycznie. Wybierz właściwy z listy.</li>
+        <li>Dodaj godziny, o których przyjmujesz lek (możesz dodać kilka).</li>
+        <li>Wybierz dawkę, częstotliwość (codziennie, w wybrane dni, co kilka dni) i ewentualnie zapas opakowania.</li>
+        <li>Kliknij <strong>Zapisz harmonogram</strong>.</li>
+      </ol>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon aria-hidden="true">today</mat-icon>
+          Jak potwierdzić, że wzięłam lek?
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <p>
+        Na stronie głównej (<strong>Dziś</strong>) zobaczysz listę dawek zaplanowanych na ten dzień.
+        Przy każdej dawce są dwa przyciski:
+      </p>
+      <ul>
+        <li><strong>Przyjmij</strong> — oznacza dawkę jako wziętą i automatycznie zmniejsza zapas opakowania (jeśli go śledzisz).</li>
+        <li><strong>Pomiń</strong> — oznacza dawkę jako pominiętą, bez zmiany zapasu.</li>
+      </ul>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon aria-hidden="true">inventory_2</mat-icon>
+          Co się dzieje z zapasem opakowania?
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <p>
+        Jeśli przy dodawaniu harmonogramu zaznaczysz "Śledź zapas opakowania", aplikacja będzie
+        zmniejszać liczbę tabletek/ml po każdym potwierdzeniu dawki. Gdy zapas spadnie poniżej
+        ustawionego progu, zobaczysz powiadomienie z przypomnieniem o uzupełnieniu.
+      </p>
+      <p>
+        Żeby dodać nowe opakowanie do zapasu, wejdź w <strong>Harmonogramy</strong> i kliknij
+        <strong>Uzupełnij opakowanie</strong> przy danym leku.
+      </p>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon aria-hidden="true">pause_circle</mat-icon>
+          Jak zatrzymać przyjmowanie leku?
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <p>
+        W zakładce <strong>Harmonogramy</strong> kliknij <strong>Dezaktywuj</strong> przy leku, który
+        chcesz zatrzymać. Harmonogram zniknie z listy i nie będzie już generował nowych dawek, ale
+        historia pozostanie zapisana.
+      </p>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon aria-hidden="true">accessibility_new</mat-icon>
+          Tryb dostępności i tryb ciemny
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <p>
+        W zakładce <strong>Ustawienia</strong> znajdziesz dwa przełączniki:
+      </p>
+      <ul>
+        <li><strong>Tryb dostępności</strong> — powiększa czcionkę i przyciski w całej aplikacji.</li>
+        <li><strong>Tryb ciemny</strong> — przełącza kolory na ciemne tło, wygodniejsze np. wieczorem.</li>
+      </ul>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon aria-hidden="true">logout</mat-icon>
+          Jak się wylogować?
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <p>
+        Przejdź do zakładki <strong>Ustawienia</strong> i kliknij przycisk <strong>Wyloguj się</strong>
+        na dole strony.
+      </p>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

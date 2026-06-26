@@ -1,10 +1,29 @@
 <div class="today">
-  <h1>Dziś</h1>
+  <h1>{{ greeting() }}{{ firstName() ? ', ' + firstName() : '' }}</h1>
+
+  @if (!isGenerating()) {
+    <p class="summary">
+      @if (doses().length === 0) {
+        Brak zaplanowanych dawek na dziś.
+      } @else if (pendingCount() === 0) {
+        Wszystkie dzisiejsze dawki masz już za sobą — {{ takenCount() }} z {{ doses().length }}.
+      } @else {
+        Dziś czeka na Ciebie {{ pendingCount() }} z {{ doses().length }} dawek.
+      }
+    </p>
+
+    @if (lowStockSchedules().length > 0) {
+      <div class="low-stock-alert" role="alert">
+        <mat-icon aria-hidden="true">warning</mat-icon>
+        <span>Kończy się zapas: {{ lowStockMedicationNames() }}</span>
+      </div>
+    }
+  }
 
   @if (isGenerating()) {
     <mat-spinner diameter="32" aria-label="Wczytywanie dawek"></mat-spinner>
   } @else if (doses().length === 0) {
-    <p>Brak zaplanowanych dawek na dziś. Dodaj harmonogram, aby zacząć.</p>
+    <p>Dodaj harmonogram, aby zacząć śledzić swoje leki.</p>
   } @else {
     <div class="dose-list">
       @for (dose of doses(); track dose.id) {
@@ -16,4 +35,9 @@
       }
     </div>
   }
+
+  <p class="help-prompt">
+    <mat-icon aria-hidden="true">help_outline</mat-icon>
+    Potrzebujesz pomocy? <a routerLink="/help">Zobacz, jak korzystać z Lekoteki</a>
+  </p>
 </div>

@@ -8,9 +8,39 @@
   }
 }
 
+.summary {
+  font-size: 1.1rem;
+  margin-top: 0;
+}
+
+.low-stock-alert {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 480px;
+  padding: 12px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  background-color: var(--mat-sys-error-container);
+  color: var(--mat-sys-on-error-container);
+}
+
 .dose-list {
   display: flex;
   flex-direction: column;
   gap: 12px;
   max-width: 480px;
+}
+
+.help-prompt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 480px;
+  margin-top: 24px;
+  color: var(--mat-sys-on-surface-variant);
+
+  a {
+    color: var(--mat-sys-primary);
+  }
 }

@@ -1,8 +1,8 @@
 <mat-toolbar color="primary">
-  <span class="brand">
+  <a class="brand" routerLink="/today" aria-label="Lekoteka — strona główna">
     <mat-icon aria-hidden="true">medication</mat-icon>
     <span class="app-title">Lekoteka</span>
-  </span>
+  </a>
 
   <nav class="links" aria-label="Główna nawigacja">
     <a
@@ -32,5 +32,23 @@
       <mat-icon aria-hidden="true">settings</mat-icon>
       <span class="link-label">Ustawienia</span>
     </a>
+    <a
+      routerLink="/help"
+      routerLinkActive="active"
+      ariaCurrentWhenActive="page"
+      aria-label="Pomoc"
+    >
+      <mat-icon aria-hidden="true">help_outline</mat-icon>
+      <span class="link-label">Pomoc</span>
+    </a>
   </nav>
+
+  <button
+    mat-icon-button
+    type="button"
+    aria-label="Wyloguj się"
+    (click)="authService.signOutUser()"
+  >
+    <mat-icon aria-hidden="true">logout</mat-icon>
+  </button>
 </mat-toolbar>
