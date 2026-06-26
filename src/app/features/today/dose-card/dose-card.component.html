@@ -1,0 +1,31 @@
+<mat-card [class.taken]="dose().status === 'taken'" [class.skipped]="dose().status === 'skipped'">
+  <mat-card-content>
+    <div class="row">
+      <span class="time">{{ time }}</span>
+      <span class="name">{{ dose().medicationName }}</span>
+    </div>
+
+    @switch (dose().status) {
+      @case ('taken') {
+        <p class="status">
+          <mat-icon aria-hidden="true">check_circle</mat-icon>
+          Wzięto
+        </p>
+      }
+      @case ('skipped') {
+        <p class="status">
+          <mat-icon aria-hidden="true">cancel</mat-icon>
+          Pominięto
+        </p>
+      }
+      @default {
+        <div class="actions">
+          <button mat-raised-button color="primary" type="button" (click)="take.emit()">
+            Przyjmij
+          </button>
+          <button mat-stroked-button type="button" (click)="skip.emit()">Pomiń</button>
+        </div>
+      }
+    }
+  </mat-card-content>
+</mat-card>

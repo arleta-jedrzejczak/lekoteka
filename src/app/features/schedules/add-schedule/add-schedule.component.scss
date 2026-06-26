@@ -1,0 +1,59 @@
+.add-schedule {
+  padding: 24px;
+  max-width: 560px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+
+  mat-form-field {
+    flex: 1;
+    min-width: 160px;
+  }
+}
+
+fieldset {
+  border: none;
+  padding: 0;
+  margin: 8px 0;
+
+  legend {
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+  }
+}
+
+.times-input {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.week-days-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.error {
+  color: var(--mat-sys-error, #b3261e);
+}
+
+@media (max-width: 480px) {
+  .add-schedule {
+    padding: 16px;
+  }
+}

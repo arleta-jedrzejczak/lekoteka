@@ -1,0 +1,21 @@
+<div class="settings">
+  <h1>Ustawienia</h1>
+
+  <mat-slide-toggle
+    [checked]="accessibilityMode()"
+    (change)="onAccessibilityModeChange($event.checked)"
+  >
+    Tryb dostępności (większa czcionka, większe przyciski)
+  </mat-slide-toggle>
+
+  <mat-slide-toggle
+    [checked]="darkMode()"
+    (change)="onDarkModeChange($event.checked)"
+  >
+    Tryb ciemny
+  </mat-slide-toggle>
+
+  <button mat-stroked-button type="button" (click)="authService.signOutUser()">
+    Wyloguj się
+  </button>
+</div>

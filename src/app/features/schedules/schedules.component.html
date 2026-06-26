@@ -1,0 +1,58 @@
+<div class="schedules">
+  <div class="header">
+    <h1>Harmonogramy</h1>
+    <a mat-raised-button color="primary" routerLink="/schedules/new">
+      <mat-icon aria-hidden="true">add</mat-icon>
+      Nowy harmonogram
+    </a>
+  </div>
+
+  @if (schedules().length === 0) {
+    <p>Brak aktywnych harmonogramów. Dodaj pierwszy lek lub suplement.</p>
+  }
+
+  <div class="schedule-list">
+    @for (schedule of schedules(); track schedule.id) {
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>{{ schedule.medication.name }}</mat-card-title>
+          <mat-card-subtitle>
+            {{ schedule.medication.form }}, {{ schedule.medication.strength }}
+          </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+          <mat-chip-set aria-label="Godziny dawkowania">
+            @for (time of schedule.times; track time) {
+              <mat-chip>{{ time }}</mat-chip>
+            }
+          </mat-chip-set>
+
+          <p>
+            {{ schedule.doseAmount }} {{ schedule.doseUnit }} — {{ frequencyLabel(schedule) }}
+          </p>
+
+          @if (schedule.stock !== null) {
+            <p>
+              Zapas: {{ schedule.stock }} {{ schedule.stockUnit }}
+              @if (schedule.stockAlertAt !== null && schedule.stock <= schedule.stockAlertAt) {
+                <strong> — kończy się!</strong>
+              }
+            </p>
+          }
+        </mat-card-content>
+
+        <mat-card-actions>
+          @if (schedule.stock !== null) {
+            <button mat-stroked-button type="button" (click)="openRefillDialog(schedule)">
+              Uzupełnij opakowanie
+            </button>
+          }
+          <button mat-button type="button" (click)="deactivate(schedule)">
+            Dezaktywuj
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    }
+  </div>
+</div>

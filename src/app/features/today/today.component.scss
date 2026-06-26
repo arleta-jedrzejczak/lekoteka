@@ -1,0 +1,16 @@
+.today {
+  padding: 24px;
+}
+
+@media (max-width: 480px) {
+  .today {
+    padding: 16px;
+  }
+}
+
+.dose-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 480px;
+}

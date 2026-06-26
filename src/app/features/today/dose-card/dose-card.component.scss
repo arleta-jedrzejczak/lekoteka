@@ -1,0 +1,36 @@
+.row {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  margin-bottom: 8px;
+}
+
+.time {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.name {
+  overflow-wrap: anywhere;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+mat-card.taken {
+  opacity: 0.7;
+}
+
+mat-card.skipped {
+  opacity: 0.5;
+}

@@ -1,0 +1,25 @@
+<div class="login-page">
+  <div class="login-card">
+    <h1>Lekoteka</h1>
+    <p>Zaloguj się, aby zarządzać swoimi lekami i suplementami.</p>
+
+    <button
+      mat-raised-button
+      color="primary"
+      type="button"
+      (click)="signIn()"
+      [disabled]="isSigningIn()"
+    >
+      @if (isSigningIn()) {
+        <mat-spinner diameter="20" aria-hidden="true"></mat-spinner>
+      } @else {
+        <mat-icon aria-hidden="true">login</mat-icon>
+      }
+      Zaloguj przez Google
+    </button>
+
+    @if (errorMessage()) {
+      <p class="error" role="alert">{{ errorMessage() }}</p>
+    }
+  </div>
+</div>

@@ -1,0 +1,57 @@
+@use '@angular/material' as mat;
+
+html {
+  @include mat.theme((
+    color: mat.$blue-palette,
+    typography: Roboto,
+    density: 0
+  ));
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+body.dark-mode {
+  & {
+    background-color: var(--mat-sys-surface);
+    color: var(--mat-sys-on-surface);
+  }
+
+  @include mat.theme((
+    color: (
+      theme-type: dark,
+      primary: mat.$blue-palette,
+    ),
+  ));
+}
+
+body.accessibility-mode {
+  font-size: 18pt;
+
+  // Angular Material (M3) nie dziedziczy font-size z body — komponenty
+  // korzystają z własnych tokenów CSS, trzeba je nadpisać bezpośrednio.
+  --mat-sys-body-large-size: 18pt;
+  --mat-sys-body-medium-size: 18pt;
+  --mat-sys-body-small-size: 16pt;
+  --mat-sys-label-large-size: 16pt;
+  --mat-sys-label-medium-size: 16pt;
+  --mat-sys-label-small-size: 14pt;
+  --mat-sys-title-large-size: 22pt;
+  --mat-sys-title-medium-size: 20pt;
+  --mat-sys-title-small-size: 18pt;
+
+  --mdc-text-button-container-height: 56px;
+  --mdc-filled-button-container-height: 56px;
+  --mdc-outlined-button-container-height: 56px;
+  --mdc-protected-button-container-height: 56px;
+
+  button,
+  a.mat-mdc-button-base,
+  .mat-mdc-button-base {
+    min-width: 56px;
+    min-height: 56px;
+  }
+}

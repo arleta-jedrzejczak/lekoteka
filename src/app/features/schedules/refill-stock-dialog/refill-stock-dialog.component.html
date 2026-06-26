@@ -1,0 +1,17 @@
+<h2 mat-dialog-title>Uzupełnij opakowanie</h2>
+
+<mat-dialog-content>
+  <p>{{ data.medicationName }}</p>
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Ile {{ data.stockUnit ?? 'jednostek' }} dodać</mat-label>
+    <input type="number" matInput [formControl]="amountControl" min="1" />
+    @if (amountControl.invalid && amountControl.touched) {
+      <mat-error>Podaj liczbę większą od 0.</mat-error>
+    }
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button type="button" (click)="cancel()">Anuluj</button>
+  <button mat-raised-button color="primary" type="button" (click)="confirm()">Uzupełnij</button>
+</mat-dialog-actions>

@@ -1,0 +1,185 @@
+<div class="add-schedule">
+  <h1>Nowy harmonogram</h1>
+
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Lek lub suplement</mat-label>
+      <input
+        type="text"
+        matInput
+        [formControl]="medicationSearchControl"
+        [matAutocomplete]="medicationAutocomplete"
+        placeholder="Wpisz nazwę leku, np. Ibuprofen"
+      />
+      <mat-autocomplete
+        #medicationAutocomplete="matAutocomplete"
+        [displayWith]="displayMedication"
+        (optionSelected)="onMedicationSelected($event)"
+      >
+        @for (medication of searchResults(); track medication.rplId) {
+          <mat-option [value]="medication">
+            {{ medication.name }} — {{ medication.form }}, {{ medication.strength }}
+          </mat-option>
+        }
+      </mat-autocomplete>
+      @if (medicationSearchControl.invalid && medicationSearchControl.touched) {
+        <mat-error>Wybierz lek z listy podpowiedzi.</mat-error>
+      }
+    </mat-form-field>
+
+    <fieldset class="times">
+      <legend>Godziny dawkowania</legend>
+      <div class="times-input">
+        <mat-form-field appearance="outline">
+          <mat-label>Godzina</mat-label>
+          <input
+            type="time"
+            matInput
+            [value]="newTime()"
+            (input)="newTime.set($any($event.target).value)"
+          />
+        </mat-form-field>
+        <button mat-stroked-button type="button" (click)="addTime()">
+          <mat-icon aria-hidden="true">add</mat-icon>
+          Dodaj godzinę
+        </button>
+      </div>
+
+      <mat-chip-set aria-label="Wybrane godziny dawkowania">
+        @for (time of times(); track time) {
+          <mat-chip (removed)="removeTime(time)">
+            {{ time }}
+            <button matChipRemove [attr.aria-label]="'Usuń godzinę ' + time">
+              <mat-icon aria-hidden="true">cancel</mat-icon>
+            </button>
+          </mat-chip>
+        }
+      </mat-chip-set>
+    </fieldset>
+
+    <div class="row">
+      <mat-form-field appearance="outline">
+        <mat-label>Dawka</mat-label>
+        <input type="number" matInput formControlName="doseAmount" min="0.1" step="0.1" />
+        @if (form.controls.doseAmount.invalid && form.controls.doseAmount.touched) {
+          <mat-error>Podaj dawkę większą od 0.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Jednostka</mat-label>
+        <mat-select formControlName="doseUnit">
+          <mat-option value="tabletka">tabletka</mat-option>
+          <mat-option value="ml">ml</mat-option>
+          <mat-option value="krople">krople</mat-option>
+          <mat-option value="mg">mg</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Stosowanie względem posiłku</mat-label>
+      <mat-select formControlName="withFood">
+        <mat-option value="przed_posiłkiem">przed posiłkiem</mat-option>
+        <mat-option value="po_posiłku">po posiłku</mat-option>
+        <mat-option value="na_czczo">na czczo</mat-option>
+        <mat-option value="dowolnie">dowolnie</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Częstotliwość</mat-label>
+      <mat-select formControlName="frequencyType">
+        <mat-option value="daily">codziennie</mat-option>
+        <mat-option value="weekly">w wybrane dni tygodnia</mat-option>
+        <mat-option value="interval">co kilka dni</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    @if (form.controls.frequencyType.value === 'weekly') {
+      <fieldset class="week-days">
+        <legend>Dni tygodnia</legend>
+        <div class="week-days-buttons">
+          @for (day of weekDays; track day.value) {
+            <button
+              mat-stroked-button
+              type="button"
+              [attr.aria-pressed]="isWeekDaySelected(day.value)"
+              [color]="isWeekDaySelected(day.value) ? 'primary' : undefined"
+              (click)="toggleWeekDay(day.value)"
+            >
+              @if (isWeekDaySelected(day.value)) {
+                <mat-icon aria-hidden="true">check</mat-icon>
+              }
+              {{ day.label }}
+            </button>
+          }
+        </div>
+      </fieldset>
+    }
+
+    @if (form.controls.frequencyType.value === 'interval') {
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Co ile dni</mat-label>
+        <input type="number" matInput formControlName="intervalDays" min="1" />
+      </mat-form-field>
+    }
+
+    <mat-checkbox formControlName="hasEndDate">Harmonogram ma datę zakończenia</mat-checkbox>
+
+    <div class="row">
+      <mat-form-field appearance="outline">
+        <mat-label>Data początkowa</mat-label>
+        <input matInput [matDatepicker]="startPicker" formControlName="startDate" />
+        <mat-datepicker-toggle matIconSuffix [for]="startPicker"></mat-datepicker-toggle>
+        <mat-datepicker #startPicker></mat-datepicker>
+      </mat-form-field>
+
+      @if (form.controls.hasEndDate.value) {
+        <mat-form-field appearance="outline">
+          <mat-label>Data końcowa</mat-label>
+          <input matInput [matDatepicker]="endPicker" formControlName="endDate" />
+          <mat-datepicker-toggle matIconSuffix [for]="endPicker"></mat-datepicker-toggle>
+          <mat-datepicker #endPicker></mat-datepicker>
+        </mat-form-field>
+      }
+    </div>
+
+    <mat-checkbox formControlName="hasStock">Śledź zapas opakowania</mat-checkbox>
+
+    @if (form.controls.hasStock.value) {
+      <div class="row">
+        <mat-form-field appearance="outline">
+          <mat-label>Aktualny zapas</mat-label>
+          <input type="number" matInput formControlName="stock" min="0" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Jednostka zapasu</mat-label>
+          <mat-select formControlName="stockUnit">
+            <mat-option value="tabletki">tabletki</mat-option>
+            <mat-option value="ml">ml</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Alert przy zapasie poniżej</mat-label>
+          <input type="number" matInput formControlName="stockAlertAt" min="0" />
+        </mat-form-field>
+      </div>
+    }
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Notatki</mat-label>
+      <textarea matInput formControlName="notes" rows="3"></textarea>
+    </mat-form-field>
+
+    @if (errorMessage()) {
+      <p class="error" role="alert">{{ errorMessage() }}</p>
+    }
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="isSaving()">
+      Zapisz harmonogram
+    </button>
+  </form>
+</div>

@@ -1,0 +1,36 @@
+<mat-toolbar color="primary">
+  <span class="brand">
+    <mat-icon aria-hidden="true">medication</mat-icon>
+    <span class="app-title">Lekoteka</span>
+  </span>
+
+  <nav class="links" aria-label="Główna nawigacja">
+    <a
+      routerLink="/today"
+      routerLinkActive="active"
+      ariaCurrentWhenActive="page"
+      aria-label="Dziś"
+    >
+      <mat-icon aria-hidden="true">today</mat-icon>
+      <span class="link-label">Dziś</span>
+    </a>
+    <a
+      routerLink="/schedules"
+      routerLinkActive="active"
+      ariaCurrentWhenActive="page"
+      aria-label="Harmonogramy"
+    >
+      <mat-icon aria-hidden="true">medication</mat-icon>
+      <span class="link-label">Harmonogramy</span>
+    </a>
+    <a
+      routerLink="/settings"
+      routerLinkActive="active"
+      ariaCurrentWhenActive="page"
+      aria-label="Ustawienia"
+    >
+      <mat-icon aria-hidden="true">settings</mat-icon>
+      <span class="link-label">Ustawienia</span>
+    </a>
+  </nav>
+</mat-toolbar>

@@ -1,0 +1,19 @@
+<div class="today">
+  <h1>Dziś</h1>
+
+  @if (isGenerating()) {
+    <mat-spinner diameter="32" aria-label="Wczytywanie dawek"></mat-spinner>
+  } @else if (doses().length === 0) {
+    <p>Brak zaplanowanych dawek na dziś. Dodaj harmonogram, aby zacząć.</p>
+  } @else {
+    <div class="dose-list">
+      @for (dose of doses(); track dose.id) {
+        <app-dose-card
+          [dose]="dose"
+          (take)="takeDose(dose)"
+          (skip)="skipDose(dose)"
+        ></app-dose-card>
+      }
+    </div>
+  }
+</div>
