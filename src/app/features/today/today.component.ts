@@ -1,6 +1,7 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -11,9 +12,25 @@ import { DoseService } from '../../core/services/dose.service';
 import { ScheduleService } from '../../core/services/schedule.service';
 import { DoseCardComponent } from './dose-card/dose-card.component';
 
+type DayPeriod = 'rano' | 'popołudniu' | 'wieczorem';
+
+interface DayPeriodGroup {
+  key: DayPeriod;
+  label: string;
+  doses: Dose[];
+  pendingCount: number;
+}
+
+function dayPeriodOf(date: Date): DayPeriod {
+  const hour = date.getHours();
+  if (hour >= 5 && hour < 12) return 'rano';
+  if (hour >= 12 && hour < 18) return 'popołudniu';
+  return 'wieczorem';
+}
+
 @Component({
   selector: 'app-today',
-  imports: [DoseCardComponent, MatIconModule, MatProgressSpinnerModule, RouterLink],
+  imports: [DoseCardComponent, MatExpansionModule, MatIconModule, MatProgressSpinnerModule, RouterLink],
   templateUrl: './today.component.html',
   styleUrl: './today.component.scss',
 })
@@ -43,6 +60,27 @@ export class TodayComponent {
   readonly doses = computed(() =>
     this.allDoses().filter((dose) => this.schedulesById().has(dose.scheduleId))
   );
+
+  readonly currentPeriod = dayPeriodOf(new Date());
+
+  readonly periodGroups = computed<DayPeriodGroup[]>(() => {
+    const doses = this.doses();
+    return (
+      [
+        ['rano', 'Rano'],
+        ['popołudniu', 'Popołudniu'],
+        ['wieczorem', 'Wieczorem'],
+      ] as const
+    ).map(([key, label]) => {
+      const periodDoses = doses.filter((dose) => dayPeriodOf(dose.scheduledAt.toDate()) === key);
+      return {
+        key,
+        label,
+        doses: periodDoses,
+        pendingCount: periodDoses.filter((dose) => dose.status === 'pending').length,
+      };
+    });
+  });
 
   readonly greeting = computed(() => {
     const hour = new Date().getHours();

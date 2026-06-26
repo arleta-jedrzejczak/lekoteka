@@ -25,15 +25,30 @@
   } @else if (doses().length === 0) {
     <p>Dodaj harmonogram, aby zacząć śledzić swoje leki.</p>
   } @else {
-    <div class="dose-list">
-      @for (dose of doses(); track dose.id) {
-        <app-dose-card
-          [dose]="dose"
-          (take)="takeDose(dose)"
-          (skip)="skipDose(dose)"
-        ></app-dose-card>
+    <mat-accordion class="day-period-accordion" multi>
+      @for (group of periodGroups(); track group.key) {
+        <mat-expansion-panel [expanded]="group.key === currentPeriod">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ group.label }}
+              @if (group.pendingCount > 0) {
+                ({{ group.pendingCount }})
+              }
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          @if (group.doses.length === 0) {
+            <p class="period-empty">Brak dawek w tym przedziale.</p>
+          } @else {
+            <div class="dose-list">
+              @for (dose of group.doses; track dose.id) {
+                <app-dose-card [dose]="dose" (take)="takeDose(dose)" (skip)="skipDose(dose)"></app-dose-card>
+              }
+            </div>
+          }
+        </mat-expansion-panel>
       }
-    </div>
+    </mat-accordion>
   }
 
   <p class="help-prompt">

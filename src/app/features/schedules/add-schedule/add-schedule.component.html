@@ -45,7 +45,7 @@
     </mat-form-field>
 
     @if (isCustomMedication()) {
-      <div class="row">
+      <div class="row custom-medication-fields">
         <mat-form-field appearance="outline">
           <mat-label>Postać (opcjonalnie)</mat-label>
           <input type="text" matInput [formControl]="customForm" placeholder="np. kapsułki" />
