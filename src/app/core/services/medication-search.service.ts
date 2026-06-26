@@ -11,7 +11,7 @@ export class MedicationSearchService {
   private readonly http = inject(HttpClient);
 
   private readonly medications$ = this.http
-    .get<Medication[]>('/rpl-medications.json')
+    .get<Medication[]>('rpl-medications.json')
     .pipe(shareReplay(1));
 
   search(query: string): Observable<Medication[]> {
