@@ -31,7 +31,7 @@
       <legend>Godziny dawkowania</legend>
       <div class="times-input">
         <mat-form-field appearance="outline">
-          <mat-label>Godzina</mat-label>
+          <mat-label>Wybierz godzinę</mat-label>
           <input
             type="time"
             matInput
@@ -39,22 +39,24 @@
             (input)="newTime.set($any($event.target).value)"
           />
         </mat-form-field>
-        <button mat-stroked-button type="button" (click)="addTime()">
+        <button mat-flat-button color="primary" type="button" (click)="addTime()">
           <mat-icon aria-hidden="true">add</mat-icon>
-          Dodaj godzinę
+          Dodaj do listy
         </button>
       </div>
 
-      <mat-chip-set aria-label="Wybrane godziny dawkowania">
-        @for (time of times(); track time) {
-          <mat-chip (removed)="removeTime(time)">
-            {{ time }}
-            <button matChipRemove [attr.aria-label]="'Usuń godzinę ' + time">
-              <mat-icon aria-hidden="true">cancel</mat-icon>
-            </button>
-          </mat-chip>
-        }
-      </mat-chip-set>
+      @if (times().length > 0) {
+        <mat-chip-set aria-label="Wybrane godziny dawkowania">
+          @for (time of times(); track time) {
+            <mat-chip (removed)="removeTime(time)">
+              {{ time }}
+              <button matChipRemove [attr.aria-label]="'Usuń godzinę ' + time">
+                <mat-icon aria-hidden="true">cancel</mat-icon>
+              </button>
+            </mat-chip>
+          }
+        </mat-chip-set>
+      }
     </fieldset>
 
     <div class="row">
@@ -178,7 +180,7 @@
       <p class="error" role="alert">{{ errorMessage() }}</p>
     }
 
-    <button mat-raised-button color="primary" type="submit" [disabled]="isSaving()">
+    <button mat-flat-button color="primary" type="submit" [disabled]="isSaving()">
       Zapisz harmonogram
     </button>
   </form>

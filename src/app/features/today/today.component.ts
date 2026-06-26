@@ -38,7 +38,11 @@ export class TodayComponent {
     return map;
   });
 
-  readonly doses = toSignal(this.doseService.todayDoses$, { initialValue: [] as Dose[] });
+  private readonly allDoses = toSignal(this.doseService.todayDoses$, { initialValue: [] as Dose[] });
+
+  readonly doses = computed(() =>
+    this.allDoses().filter((dose) => this.schedulesById().has(dose.scheduleId))
+  );
 
   readonly greeting = computed(() => {
     const hour = new Date().getHours();
