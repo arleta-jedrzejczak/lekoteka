@@ -1,12 +1,6 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import {
-  AbstractControl,
-  FormBuilder,
-  ReactiveFormsModule,
-  ValidationErrors,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
@@ -31,12 +25,6 @@ const WEEK_DAYS = [
   { label: 'Sob', value: 6 },
   { label: 'Nd', value: 0 },
 ];
-
-function medicationSelectedValidator(control: AbstractControl): ValidationErrors | null {
-  return typeof control.value === 'string' && control.value.trim().length > 0
-    ? { invalidMedication: true }
-    : null;
-}
 
 @Component({
   selector: 'app-add-schedule',
@@ -69,8 +57,26 @@ export class AddScheduleComponent {
 
   readonly medicationSearchControl = this.fb.control<string | Medication>('', {
     nonNullable: true,
-    validators: [Validators.required, medicationSelectedValidator],
+    validators: Validators.required,
   });
+
+  readonly customForm = this.fb.control('', { nonNullable: true });
+  readonly customStrength = this.fb.control('', { nonNullable: true });
+
+  readonly isCustomMedication = computed(() => {
+    const value = this.medicationSearchControlValue();
+    return typeof value === 'string' && value.trim().length > 0;
+  });
+
+  readonly hasMedicationValue = computed(() => {
+    const value = this.medicationSearchControlValue();
+    return typeof value === 'string' ? value.length > 0 : value !== null;
+  });
+
+  private readonly medicationSearchControlValue = toSignal(
+    this.medicationSearchControl.valueChanges,
+    { initialValue: this.medicationSearchControl.value }
+  );
 
   readonly searchResults = toSignal(
     this.medicationSearchControl.valueChanges.pipe(
@@ -124,6 +130,12 @@ export class AddScheduleComponent {
     this.medicationSearchControl.setValue(event.option.value as Medication);
   }
 
+  clearMedication(): void {
+    this.medicationSearchControl.reset('');
+    this.customForm.reset('');
+    this.customStrength.reset('');
+  }
+
   addTime(): void {
     const time = this.newTime();
     if (time && !this.times().includes(time)) {
@@ -158,7 +170,6 @@ export class AddScheduleComponent {
     if (
       this.medicationSearchControl.invalid ||
       this.form.invalid ||
-      typeof medication === 'string' ||
       this.times().length === 0 ||
       noWeekDaysSelected
     ) {
@@ -172,9 +183,20 @@ export class AddScheduleComponent {
       return;
     }
 
+    const resolvedMedication: Medication =
+      typeof medication === 'string'
+        ? {
+            rplId: null,
+            name: medication.trim(),
+            form: this.customForm.value.trim(),
+            strength: this.customStrength.value.trim(),
+            leafletUrl: null,
+          }
+        : medication;
+
     const values = this.form.getRawValue();
     const newSchedule: NewSchedule = {
-      medication,
+      medication: resolvedMedication,
       startDate: toTimestamp(values.startDate),
       endDate: values.hasEndDate && values.endDate ? toTimestamp(values.endDate) : null,
       times: this.times(),

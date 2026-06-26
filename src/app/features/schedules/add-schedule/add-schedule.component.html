@@ -9,8 +9,20 @@
         matInput
         [formControl]="medicationSearchControl"
         [matAutocomplete]="medicationAutocomplete"
-        placeholder="Wpisz nazwę leku, np. Ibuprofen"
+        placeholder="Wpisz nazwę leku lub suplementu, np. Ibuprofen"
       />
+      @if (hasMedicationValue()) {
+        <button
+          matSuffix
+          mat-icon-button
+          class="clear-medication-button"
+          type="button"
+          aria-label="Wyczyść pole"
+          (click)="clearMedication()"
+        >
+          <mat-icon aria-hidden="true">close</mat-icon>
+        </button>
+      }
       <mat-autocomplete
         #medicationAutocomplete="matAutocomplete"
         [displayWith]="displayMedication"
@@ -23,9 +35,28 @@
         }
       </mat-autocomplete>
       @if (medicationSearchControl.invalid && medicationSearchControl.touched) {
-        <mat-error>Wybierz lek z listy podpowiedzi.</mat-error>
+        <mat-error>Wpisz nazwę leku lub suplementu.</mat-error>
+      }
+      @if (isCustomMedication()) {
+        <mat-hint>
+          Brak tej pozycji w rejestrze RPL? Zostanie zapisana jako własny wpis.
+        </mat-hint>
       }
     </mat-form-field>
+
+    @if (isCustomMedication()) {
+      <div class="row">
+        <mat-form-field appearance="outline">
+          <mat-label>Postać (opcjonalnie)</mat-label>
+          <input type="text" matInput [formControl]="customForm" placeholder="np. kapsułki" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Moc (opcjonalnie)</mat-label>
+          <input type="text" matInput [formControl]="customStrength" placeholder="np. 500 mg" />
+        </mat-form-field>
+      </div>
+    }
 
     <fieldset class="times">
       <legend>Godziny dawkowania</legend>

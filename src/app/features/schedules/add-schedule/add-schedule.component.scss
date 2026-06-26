@@ -52,6 +52,10 @@ fieldset {
   color: var(--mat-sys-error, #b3261e);
 }
 
+.clear-medication-button {
+  margin-right: 4px;
+}
+
 @media (max-width: 480px) {
   .add-schedule {
     padding: 16px;
